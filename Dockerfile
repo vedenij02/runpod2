@@ -1,7 +1,6 @@
-# Use custom vLLM image with Blackwell (B200/SM 12.0) support
-# This image has patched Triton and vLLM optimized for Blackwell GPUs
+# Use official PyTorch image with CUDA 12.8 for Blackwell (B200) support
 # Also compatible with Hopper (H100/H200) architecture
-FROM ghcr.io/gonka-ai/vllm:v0.9.1-blackwell
+FROM pytorch/pytorch:2.7.0-cuda12.8-cudnn9-devel
 
 # Set working directory
 WORKDIR /app
@@ -27,6 +26,5 @@ ENV K_DIM=12
 ENV HF_HOME=/runpod-volume/huggingface-cache
 ENV TRANSFORMERS_CACHE=/runpod-volume/huggingface-cache/hub
 
-# Override vLLM's entrypoint to run our handler instead
-ENTRYPOINT []
+# Run the handler
 CMD ["python", "handler.py"]
