@@ -1,5 +1,6 @@
-# Use gonka's custom vLLM image with Blackwell support and PoC endpoints
-FROM ghcr.io/gonka-ai/vllm:v0.9.1-blackwell
+# Use gonka's custom vLLM image with PoC v2 endpoints support
+# Note: -poc suffix means PoC endpoints are enabled, -blackwell is just GPU architecture
+FROM ghcr.io/gonka-ai/vllm:v0.9.1-poc
 
 # Set working directory
 WORKDIR /app
