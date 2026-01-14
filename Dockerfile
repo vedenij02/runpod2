@@ -1,30 +1,38 @@
-# Use official PyTorch image with CUDA 12.8 for Blackwell (B200) support
-# Also compatible with Hopper (H100/H200) architecture
-FROM pytorch/pytorch:2.7.0-cuda12.8-cudnn9-devel
+# Use gonka's custom vLLM image with Blackwell support and PoC endpoints
+FROM ghcr.io/gonka-ai/vllm:v0.9.1-blackwell
 
 # Set working directory
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install RunPod SDK and HTTP client
+# Use vLLM's Python directly
+RUN /usr/bin/python3.12 -m pip install --no-cache-dir runpod requests httpx
 
-# Copy source code
-COPY src/ /app/src/
+# Copy handler code
 COPY handler.py /app/
+COPY startup.sh /app/
+RUN chmod +x /app/startup.sh
 
-# Set environment variables
+# Environment variables
 ENV PYTHONUNBUFFERED=1
-ENV PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
 
 # PoC v2 settings
 ENV POC_VERSION=v2
 ENV MODEL_NAME=Qwen/Qwen3-235B-A22B-Instruct-2507-FP8
 ENV K_DIM=12
+ENV SEQ_LEN=256
+
+# vLLM settings
+ENV VLLM_PORT=8000
+ENV VLLM_HOST=127.0.0.1
 
 # HuggingFace cache location (RunPod caches models here)
 ENV HF_HOME=/runpod-volume/huggingface-cache
 ENV TRANSFORMERS_CACHE=/runpod-volume/huggingface-cache/hub
+ENV VLLM_USE_V1=0
 
-# Run the handler
-CMD ["python", "handler.py"]
+# Clear any default entrypoint from vLLM image
+ENTRYPOINT []
+
+# Run startup script which starts vLLM and handler
+CMD ["/app/startup.sh"]

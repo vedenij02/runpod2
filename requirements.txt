@@ -1,22 +1,9 @@
-# Core dependencies
-torch>=2.7.0  # Required for Blackwell (SM100) support
-numpy>=2.1.1
-scipy>=1.14.1
-accelerate>=0.33.0  # Updated for Blackwell compatibility
-triton>=3.3.0  # Required for Blackwell tensor cores
+# Minimal dependencies for vLLM-based handler
+# Most dependencies come from the vLLM base image
 
-# HuggingFace for Qwen model loading (PoC v2)
-transformers>=4.40.0
-huggingface_hub>=0.20.0
-
-# Runpod SDK
+# RunPod SDK
 runpod
 
-# HTTP client for warmup callback
+# HTTP clients (for communicating with vLLM)
 requests>=2.31.0
-
-# Additional dependencies
-tiktoken>=0.8.0
-fire>=0.5.0
-sympy>=1.12
-tqdm>=4.66.0
+httpx>=0.24.0
