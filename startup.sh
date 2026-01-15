@@ -37,7 +37,7 @@ echo "Host: ${VLLM_HOST}"
     --enable-poc \
     --trust-remote-code \
     --gpu-memory-utilization 0.95 \
-    --max-model-len 512 \
+    --max-model-len 16384 \
     --enforce-eager \
     2>&1 | tee /tmp/vllm.log &
 
