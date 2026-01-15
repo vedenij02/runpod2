@@ -27,6 +27,20 @@ ENV SEQ_LEN=256
 ENV VLLM_PORT=8000
 ENV VLLM_HOST=127.0.0.1
 
+# Tensor parallel size - MUST be 4 for Qwen3-235B FP8
+# With TP=8, the MoE gate/up weights (192) are not divisible by FP8 block_n (128)
+ENV TENSOR_PARALLEL_SIZE=4
+
+# NCCL settings for multi-GPU communication
+# Disable P2P if GPUs can't communicate directly
+ENV NCCL_P2P_DISABLE=1
+# Disable InfiniBand (not available in most cloud setups)
+ENV NCCL_IB_DISABLE=1
+# Use shared memory for communication
+ENV NCCL_SHM_DISABLE=0
+# Debug level (set to INFO for troubleshooting)
+ENV NCCL_DEBUG=WARN
+
 # HuggingFace cache location (RunPod caches models here)
 ENV HF_HOME=/runpod-volume/huggingface-cache
 ENV TRANSFORMERS_CACHE=/runpod-volume/huggingface-cache/hub
