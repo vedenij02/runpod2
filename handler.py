@@ -378,7 +378,6 @@ def pooled_handler_v2(input_data: Dict) -> Generator[Dict, None, None]:
     poll_interval = 0.5  # 500ms
     block_hash = None
     block_height = None
-    r_target = None
 
     while time.time() - poll_start < max_wait:
         try:
@@ -391,7 +390,6 @@ def pooled_handler_v2(input_data: Dict) -> Generator[Dict, None, None]:
                 if config and config.get("type") == "config":
                     block_hash = config.get("block_hash")
                     block_height = config.get("block_height")
-                    r_target = config.get("r_target")
                     if block_hash:
                         logger.info(f"Received block_hash: {block_hash[:16]}...")
                         break
