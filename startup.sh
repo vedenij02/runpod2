@@ -28,13 +28,12 @@ echo "=== Starting vLLM Server ==="
 echo "Port: ${VLLM_PORT}"
 echo "Host: ${VLLM_HOST}"
 
-# Start vLLM server in background with PoC endpoints enabled
+# Start vLLM server in background (PoC endpoints included in v0.9.1-poc-v2-post2)
 /usr/bin/python3.12 -m vllm.entrypoints.openai.api_server \
     --model "${MODEL_NAME}" \
     --host "${VLLM_HOST}" \
     --port "${VLLM_PORT}" \
     --tensor-parallel-size "${TP_SIZE}" \
-    --enable-poc \
     --trust-remote-code \
     --gpu-memory-utilization 0.85 \
     --max-model-len 1025 \
